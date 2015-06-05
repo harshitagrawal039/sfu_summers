@@ -1,3 +1,7 @@
+//======================================================================
+// Check whether a function satisfies a given condition or not.
+// Has to be modified for the functions other than arity 3.
+//======================================================================
 #include<iostream>
 #include<stdlib.h>
 
@@ -44,6 +48,9 @@ bool check_condition(int *x, int *y)
 
 }
 
+/* Check whether the global function 'func' satisfies the given conditon
+   for all values of x and y or not.
+   Needs to be modified for functions of arity other than 3.*/
 bool check_function()
 {
 	//bool flag = true;
@@ -79,6 +86,7 @@ bool check_function()
 
 int main(int argc, char const *argv[])
 {
+	/* Input the function */
 	func[0][0][0] = 0;	func[0][1][0] = 1;
 	func[0][0][1] = 1;	func[0][1][1] = 1;
 
