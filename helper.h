@@ -32,4 +32,12 @@ bool check_function_2();
 // condition.
 void find_a_function();
 
+// Computes the fourier transform of the given function and returns
+// a pointer to the newly made fourier transform
+void * fourier_transform(void * g);
+
+// Computes the fourier transform of the given function, but does not
+// create a new memory, makes changes in place.//
+void fourier_transform_2(void *my_f, void *my_f_t);
+
 #endif	//HELPER_H

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "helper.h"
 #include <sys/time.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -151,5 +152,134 @@ void find_a_function()
 	}
 	else{
 		cout << "All combinations satisfy" << endl;
+	}
+}
+
+//======================================================================
+// function sign returns (-1)^(num_of_1s)
+//======================================================================
+int sign(int num_of_1s){
+	if (num_of_1s%2==0)
+		return 1;
+	else
+		return -1;
+}
+
+//========================================================================
+// Computes the fourier transform of the given function and returns
+// a pointer to the newly made fourier transform
+//========================================================================
+void * fourier_transform(void * g)
+{
+	if (arity == 2){
+		//double** old_f = (double **) g;
+		double (*old_f)[2] = (double(*)[2]) g;
+		double** new_f = (double **) calloc(2,sizeof(double *));
+		for (int i = 0; i < 2; ++i)
+		{
+			new_f[i] = (double *) calloc(2,sizeof(double));
+		}
+
+		int i0,i1,j0,j1,num_of_1s;
+		double sum;
+		for(i0=0; i0<2 ;i0++){
+			for(i1=0; i1<2 ;i1++){
+				sum = 0; num_of_1s = 0;
+				for(j0=0; j0<2 ;j0++){
+					for(j1=0; j1<2 ;j1++){
+						num_of_1s = i0*j0 + i1*j1;
+						sum = sum + sign(num_of_1s)*old_f[j0][j1];
+					}
+				}
+				new_f[i0][i1] = sum;
+			}
+		}
+		return (void *) new_f;
+	}
+
+	else if (arity == 3){
+		//double*** old_f = (double ***) g;
+		double(*old_f)[2][2] = (double(*)[2][2]) g;
+		double*** new_f = (double ***) calloc(2,sizeof(double **));
+
+		for (int i = 0; i < 2; ++i)
+		{
+			new_f[i] = (double **) calloc(2,sizeof(double *));
+			for (int j = 0; j < 2; ++j)
+			{
+				new_f[i][j] = (double *) calloc(2,sizeof(double));
+			}
+		}
+
+		int i0,i1,i2,j0,j1,j2,num_of_1s;
+		double sum;
+		for(i0=0; i0<2 ;i0++){
+			for(i1=0; i1<2 ;i1++){
+				for(i2=0; i2<2; i2++){
+					sum = 0; num_of_1s = 0;
+					for(j0=0; j0<2 ;j0++){
+						for(j1=0; j1<2 ;j1++){
+							for(j2=0; j2<2; j2++){
+								num_of_1s = i0*j0 + i1*j1 + i2*j2;
+								sum = sum + sign(num_of_1s)*old_f[j0][j1][j2];
+							}
+						}
+					}
+					new_f[i0][i1][i2] = sum;
+				}
+			}
+		}
+		return (void *) new_f;
+	}
+}
+
+//========================================================================
+// Computes the fourier transform of the given function, but does not
+// create a new memory, makes changes in place.
+//========================================================================
+void fourier_transform_2(void *my_f, void *my_f_t)
+{
+	if (arity==2){
+		double(*old_f)[2] = (double(*)[2]) my_f;
+		double(*new_f)[2] = (double(*)[2]) my_f_t;
+
+		int i0,i1,j0,j1,num_of_1s;
+		double sum;
+		for(i0=0; i0<2 ;i0++){
+			for(i1=0; i1<2 ;i1++){
+				sum = 0; num_of_1s = 0;
+				for(j0=0; j0<2 ;j0++){
+					for(j1=0; j1<2 ;j1++){
+						num_of_1s = i0*j0 + i1*j1;
+						sum = sum + sign(num_of_1s)*old_f[j0][j1];
+					}
+				}
+				new_f[i0][i1] = sum;
+			}
+		}
+	}
+
+	else if (arity==3){
+		double(*old_f)[2][2] = (double(*)[2][2]) my_f;
+		double(*new_f)[2][2] = (double(*)[2][2]) my_f_t;
+
+		int i0,i1,i2,j0,j1,j2,num_of_1s;
+		double sum;
+		for(i0=0; i0<2 ;i0++){
+			for(i1=0; i1<2 ;i1++){
+				for(i2=0; i2<2; i2++){
+					sum = 0; num_of_1s = 0;
+					for(j0=0; j0<2 ;j0++){
+						for(j1=0; j1<2 ;j1++){
+							for(j2=0; j2<2; j2++){
+								num_of_1s = i0*j0 + i1*j1 + i2*j2;
+								sum = sum + sign(num_of_1s)*old_f[j0][j1][j2];
+							}
+						}
+					}
+					new_f[i0][i1][i2] = sum;
+				}
+			}
+		}
 	}
 }
