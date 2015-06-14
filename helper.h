@@ -22,7 +22,7 @@ bool check_condition(int *x, int *y);
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/
-bool check_function();
+bool check_function(bool (*bool_f)(int*, int*));
 
 /* Returns false only when function of arity 3 satisfies, but that of arity 2 does not,
    otherwise returns true.*/

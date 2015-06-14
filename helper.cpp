@@ -57,7 +57,7 @@ bool check_condition(int *x, int *y)
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/
-bool check_function()
+bool check_function(bool (*bool_f)(int*, int*))
 {
 	//bool flag = true;
 	int x[arity], y[arity];
@@ -77,7 +77,7 @@ bool check_function()
 							for (y2=0; y2<2; y2++){
 								y[2] = y2;
 								//cout << "here !!" << endl;
-								if (check_condition(x, y) == false){
+								if ((*bool_f)(x, y) == false){
 									return false;
 								}
 							}
@@ -90,13 +90,12 @@ bool check_function()
 	}
 }
 
-
 /* Returns false only when function of arity 3 satisfies, but that of arity 2 does not,
    otherwise returns true.*/
 bool check_function_2()
 {
 	// If function satisfies the condition, then check the condition for summation
-	if (check_function()){
+	if (check_function(&check_condition)){
 		if( (func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[1][1][0]+func[1][1][1]) 
 			< (func[1][0][0]+func[1][0][1])*(func[1][0][0]+func[1][0][1])*(func[0][1][0]+func[0][1][1])*(func[0][1][0]+func[0][1][1])){
 			return false;
