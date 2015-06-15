@@ -40,6 +40,8 @@ int main(int argc, char const *argv[])
 	cout << "Enter the number of partitions in which you want to divide the interval [0,1]:"<<endl;
 	cin >> count;
 	struct timeval tp_start, tp_end;
+
+	double func[2][2][2];
 	// /* Input the function */
 	// func[0][0][0] = 3;	func[0][1][0] = 1;
 	// func[0][0][1] = 1;	func[0][1][1] = 1;

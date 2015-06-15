@@ -38,6 +38,7 @@ int main(int argc, char const *argv[])
 {
 	struct timeval tp_start, tp_end;
 
+	double func[2][2][2];
 	/* Input the function */
 	func[0][0][0] = 0.9;	func[0][1][0] = 0.9;
 	func[0][0][1] = 0.3;	func[0][1][1] = 0.1;

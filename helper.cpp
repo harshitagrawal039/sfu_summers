@@ -11,7 +11,7 @@
 using namespace std;
 
 int arity = 3;		// Arity of the function (Global)
-double func[2][2][2];		// Global declaration of the function
+//double func[2][2][2];		// Global declaration of the function
 
 int count;			// How many partitions of interval [0,1] (Global)
 

@@ -9,7 +9,7 @@
 #include <sys/time.h>
 
 extern int arity;		// Arity of the function (Global)
-extern double func[2][2][2];		// Global declaration of the function
+// extern double func[2][2][2];		// Global declaration of the function
 
 extern int count;			// How many partitions of interval [0,1] (Global)
 
