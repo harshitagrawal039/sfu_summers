@@ -34,31 +34,6 @@ double f(void* fn, int *x)
 	return *((double *)result);
 }
 
-/* Check whether particular input vectors x and y satisfy the condition */
-bool check_condition(void* fn, int *x, int *y)
-{
-	// Specify the main condition here
-	int x_and_y[arity];
-	int x_or_y[arity];
-
-	//void * fn = (void *) func;
-	for (int i = 0; i < arity; i++)
-	{
-		x_and_y[i] = x[i] and y[i];
-		x_or_y[i] = x[i] or y[i];
-	}
-
-	if (f(fn,x)*f(fn,x)*f(fn,y)*f(fn,y) <= f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_or_y)){		// Main condition
-
-		return true;
-	}
-	else {
-		return false;
-	}
-	return false;
-
-}
-
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/

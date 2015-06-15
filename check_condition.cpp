@@ -8,6 +8,32 @@
 
 using namespace std;
 
+/* Check whether particular input vectors x and y satisfy the condition */
+bool check_condition(void* fn, int *x, int *y)
+{
+	// Specify the main condition here
+	int x_and_y[arity];
+	int x_or_y[arity];
+
+	//void * fn = (void *) func;
+	for (int i = 0; i < arity; i++)
+	{
+		x_and_y[i] = x[i] and y[i];
+		x_or_y[i] = x[i] or y[i];
+	}
+
+	if (f(fn,x)*f(fn,x)*f(fn,y)*f(fn,y) <= f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_or_y)){		// Main condition
+
+		return true;
+	}
+	else {
+		return false;
+	}
+	return false;
+
+}
+
+
 int main(int argc, char const *argv[])
 {
 	struct timeval tp_start, tp_end;

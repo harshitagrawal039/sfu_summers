@@ -16,9 +16,6 @@ extern int count;			// How many partitions of interval [0,1] (Global)
 /* Computes fn(x) */
 double f(void* fn, int *x);
 
-/* Check whether particular input vectors x and y satisfy the condition */
-bool check_condition(void* fn, int *x, int *y);
-
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/
