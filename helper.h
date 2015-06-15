@@ -24,13 +24,13 @@ bool check_condition(void* fn, int *x, int *y);
    Needs to be modified for functions of arity other than 3.*/
 bool check_function(void* fn, bool (*bool_f)(void*, int*, int*));
 
-/* Returns false only when function of arity 3 satisfies, but that of arity 2 does not,
-   otherwise returns true.*/
-bool check_function_2();
+/* Returns false only when function of arity 3 satisfies, but that of arity 2(i.e.
+   after summation) does not, otherwise returns true.*/
+bool check_function_2(void* fn, bool (*bool_f)(void*, int*, int*));
 
 // Tries to find a counter example that does bot satisfy the specified 
-// condition.
-void find_a_function();
+// condition(only for arity 3)
+void find_a_function(void* fn, bool (*bool_f)(void*, int*, int*));
 
 // Computes the fourier transform of the given function and returns
 // a pointer to the newly made fourier transform

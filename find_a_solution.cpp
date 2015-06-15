@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
 
 	// cout << check_function() <<endl;
 
-	find_a_function();
+	find_a_function((void *)func, &check_condition);
 	
 	gettimeofday(&tp_end, NULL);
 	//printf("Total time: %lld microseconds\n", tp_end.tv_sec*1000000+tp_end.tv_usec - (tp_start.tv_sec*1000000+tp_start.tv_usec));

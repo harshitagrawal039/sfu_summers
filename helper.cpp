@@ -131,52 +131,68 @@ bool check_function(void* fn, bool (*bool_f)(void*, int*, int*))
 	}
 }
 
-/* Returns false only when function of arity 3 satisfies, but that of arity 2 does not,
-   otherwise returns true.*/
-bool check_function_2()
+/* Returns false only when function of arity 3 satisfies, but that of arity 2(i.e.
+   after summation) does not, otherwise returns true.*/
+bool check_function_2(void* fn, bool (*bool_f)(void*, int*, int*))
 {
 	// If function satisfies the condition, then check the condition for summation
-	if (check_function((void *)func, &check_condition)){
-		if( (func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[1][1][0]+func[1][1][1]) 
-			< (func[1][0][0]+func[1][0][1])*(func[1][0][0]+func[1][0][1])*(func[0][1][0]+func[0][1][1])*(func[0][1][0]+func[0][1][1])){
+	if (check_function(fn, bool_f)){
+		double new_f[2][2];
+		double (*my_f)[2][2] = (double (*)[2][2]) fn;
+		for (int i = 0; i < 2; ++i)
+		{
+			for (int j = 0; j< 2; ++j)
+			{
+				new_f[i][j] = my_f[i][j][0] + my_f[i][j][1];
+			}
+		}
+		// if( (func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[1][1][0]+func[1][1][1]) 
+		// 	< (func[1][0][0]+func[1][0][1])*(func[1][0][0]+func[1][0][1])*(func[0][1][0]+func[0][1][1])*(func[0][1][0]+func[0][1][1])){
+		// 	return false;
+		// }
+		arity = 2;		// change global arity
+		if (check_function((void *)new_f, bool_f)== false){
+			arity = 3;
 			return false;
 		}
 	}
+	arity = 3;		// restore global arity
 	return true;
 }
 
-// Tries to find a counter example that does bot satisfy the specified 
-// condition.
-void find_a_function()
+// Tries to find a counter example that does not satisfy the specified 
+// condition(only for arity 3)
+void find_a_function(void* fn, bool (*bool_f)(void*, int*, int*))
 {
 	int i0, i1, i2, i3, i4, i5, i6, i7;
 	bool flag = false;
+	double (*fun)[2][2] = (double (*)[2][2]) fn;
 	for (i0 = 0; i0 < count; i0++){
-		func[0][0][0] = (i0+0.5)/count;
+		fun[0][0][0] = (i0+0.5)/count;
 		for (i1 = 0; i1 < count; i1++){
-			func[0][0][1] = (i1+0.5)/count;
+			fun[0][0][1] = (i1+0.5)/count;
 			for (i2 = 0; i2 < count; i2++){
-				func[0][1][0] = (i2+0.5)/count;
+				fun[0][1][0] = (i2+0.5)/count;
 				for (i3 = 0; i3 < count; i3++){
-					func[0][1][1] = (i3+0.5)/count;
+					fun[0][1][1] = (i3+0.5)/count;
 					for (i4 = 0; i4 < count; i4++){
-						func[1][0][0] = (i4+0.5)/count;
+						fun[1][0][0] = (i4+0.5)/count;
 						for (i5 = 0; i5 < count; i5++){
-							func[1][0][1] = (i5+0.5)/count;
+							fun[1][0][1] = (i5+0.5)/count;
 							for (i6 = 0; i6 < count; i6++){
-								func[1][1][0] = (i6+0.5)/count;
+								fun[1][1][0] = (i6+0.5)/count;
 								for (i7 = 0; i7 < count; i7++){
-									func[1][1][1] = (i7+0.5)/count;
+									fun[1][1][1] = (i7+0.5)/count;
 
 									/* We have a new function now, check whether it satisfies or not.*/
 									// only print those who are counter examples
-									if (check_function_2()== false) {
+									if (check_function_2(fn, bool_f)== false) {
 										flag = true;
 										cout <<"f:     ( does not satisfy)" << endl;
-										cout <<"    "<< func[0][0][0] <<"\t"<< func[0][1][0] <<endl;
-										cout <<"    "<< func[0][0][1] <<"\t"<< func[0][1][1] <<endl;
-										cout <<"    "<< func[1][0][0] <<"\t"<< func[1][1][0] <<endl;
-										cout <<"    "<< func[1][0][1] <<"\t"<< func[1][1][1] <<endl << endl;
+										cout <<"    "<< fun[0][0][0] <<"\t"<< fun[0][1][0] <<endl;
+										cout <<"    "<< fun[0][0][1] <<"\t"<< fun[0][1][1] <<endl;
+										cout <<"    "<< fun[1][0][0] <<"\t"<< fun[1][1][0] <<endl;
+										cout <<"    "<< fun[1][0][1] <<"\t"<< fun[1][1][1] <<endl << endl;
 									}
 									
 								}
