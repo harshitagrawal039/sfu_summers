@@ -201,8 +201,16 @@ int sign(int num_of_1s){
 // a pointer to the newly made fourier transform
 //========================================================================
 void * fourier_transform(void * g)
-{
-	if (arity == 2){
+{	
+	if (arity == 1){
+		double* old_f = (double *)g;
+		double* new_f = (double *) calloc(2, sizeof(double));
+		new_f[0] = old_f[0] + old_f[1];
+		new_f[1] = old_f[0] - old_f[1];
+		return (void *) new_f;
+	}
+	
+	else if (arity == 2){
 		//double** old_f = (double **) g;
 		double (*old_f)[2] = (double(*)[2]) g;
 		double** new_f = (double **) calloc(2,sizeof(double *));
@@ -270,7 +278,15 @@ void * fourier_transform(void * g)
 //========================================================================
 void fourier_transform_2(void *my_f, void *my_f_t)
 {
-	if (arity==2){
+	if (arity == 1){
+		double* old_f = (double *) my_f;
+		double* new_f = (double *) my_f_t;
+
+		new_f[0] = old_f[0] + old_f[1];
+		new_f[1] = old_f[0] - old_f[1];
+	}
+	
+	else if (arity==2){
 		double(*old_f)[2] = (double(*)[2]) my_f;
 		double(*new_f)[2] = (double(*)[2]) my_f_t;
 
