@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 
 	gettimeofday(&tp_start, NULL);
 
-	cout << check_function(&check_condition) <<endl;
+	cout << check_function((void *)func, &check_condition) <<endl;
 	
 	gettimeofday(&tp_end, NULL);
 	//printf("Total time: %lld microseconds\n", tp_end.tv_sec*1000000+tp_end.tv_usec - (tp_start.tv_sec*1000000+tp_start.tv_usec));

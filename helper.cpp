@@ -15,36 +15,40 @@ double func[2][2][2];		// Global declaration of the function
 
 int count;			// How many partitions of interval [0,1] (Global)
 
-/* Computes func(x) */
-double f(int *x)
+/* Computes fn(x) */
+double f(void* fn, int *x)
 {
 	void * result;
 	if (arity==1){
-		 result = (void *)(func + x[0]);
+		double* my_f =(double *) fn;
+		result = (void *)(my_f + x[0]);
 	}
 	else if (arity==2){
-		result = (void *)(*(func + x[0]) + x[1]);
+		double(*my_f)[2] =(double(*)[2]) fn;
+		result = (void *)(*(my_f + x[0]) + x[1]);
 	}
 	else if (arity==3){
-		result = (void *)(*(*(func + x[0]) + x[1]) + x[2]);
+		double(*my_f)[2][2] =(double(*)[2][2]) fn;
+		result = (void *)(*(*(my_f + x[0]) + x[1]) + x[2]);
 	}
 	return *((double *)result);
 }
 
 /* Check whether particular input vectors x and y satisfy the condition */
-bool check_condition(int *x, int *y)
+bool check_condition(void* fn, int *x, int *y)
 {
 	// Specify the main condition here
 	int x_and_y[arity];
 	int x_or_y[arity];
 
+	//void * fn = (void *) func;
 	for (int i = 0; i < arity; i++)
 	{
 		x_and_y[i] = x[i] and y[i];
 		x_or_y[i] = x[i] or y[i];
 	}
 
-	if (f(x)*f(x)*f(y)*f(y) <= f(x_and_y)*f(x_and_y)*f(x_and_y)*f(x_or_y)){		// Main condition
+	if (f(fn,x)*f(fn,x)*f(fn,y)*f(fn,y) <= f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_and_y)*f(fn,x_or_y)){		// Main condition
 
 		return true;
 	}
@@ -58,12 +62,48 @@ bool check_condition(int *x, int *y)
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/
-bool check_function(bool (*bool_f)(int*, int*))
+bool check_function(void* fn, bool (*bool_f)(void*, int*, int*))
 {
 	//bool flag = true;
 	int x[arity], y[arity];
 
-	if(arity == 3){
+	if(arity == 1){
+		int x0, y0;
+		for (x0=0; x0<2; x0++){
+			x[0] = x0;
+			for (y0=0; y0<2; y0++){
+				y[0] = y0;
+				//cout << "here !!" << endl;
+				if ((*bool_f)(fn, x, y) == false){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	else if(arity == 2){
+		int x1, x0, y1, y0;
+		for (x0=0; x0<2; x0++){
+			x[0] = x0;
+			for (x1=0; x1<2; x1++){
+				x[1] = x1;
+				for (y0=0; y0<2; y0++){
+					y[0] = y0;
+					for (y1=0; y1<2; y1++){
+						y[1] = y1;
+						//cout << "here !!" << endl;
+						if ((*bool_f)(fn, x, y) == false){
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	else if(arity == 3){
 		int x1, x2, x0, y1, y2, y0;
 		for (x0=0; x0<2; x0++){
 			x[0] = x0;
@@ -78,7 +118,7 @@ bool check_function(bool (*bool_f)(int*, int*))
 							for (y2=0; y2<2; y2++){
 								y[2] = y2;
 								//cout << "here !!" << endl;
-								if ((*bool_f)(x, y) == false){
+								if ((*bool_f)(fn, x, y) == false){
 									return false;
 								}
 							}
@@ -96,7 +136,7 @@ bool check_function(bool (*bool_f)(int*, int*))
 bool check_function_2()
 {
 	// If function satisfies the condition, then check the condition for summation
-	if (check_function(&check_condition)){
+	if (check_function((void *)func, &check_condition)){
 		if( (func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[0][0][0]+func[0][0][1])*(func[1][1][0]+func[1][1][1]) 
 			< (func[1][0][0]+func[1][0][1])*(func[1][0][0]+func[1][0][1])*(func[0][1][0]+func[0][1][1])*(func[0][1][0]+func[0][1][1])){
 			return false;

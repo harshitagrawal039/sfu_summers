@@ -13,16 +13,16 @@ extern double func[2][2][2];		// Global declaration of the function
 
 extern int count;			// How many partitions of interval [0,1] (Global)
 
-/* Computes func(x) */
-double f(int *x);
+/* Computes fn(x) */
+double f(void* fn, int *x);
 
 /* Check whether particular input vectors x and y satisfy the condition */
-bool check_condition(int *x, int *y);
+bool check_condition(void* fn, int *x, int *y);
 
 /* Check whether the global function 'func' satisfies the given conditon
    for all values of x and y or not.
    Needs to be modified for functions of arity other than 3.*/
-bool check_function(bool (*bool_f)(int*, int*));
+bool check_function(void* fn, bool (*bool_f)(void*, int*, int*));
 
 /* Returns false only when function of arity 3 satisfies, but that of arity 2 does not,
    otherwise returns true.*/
